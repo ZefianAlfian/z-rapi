@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Covid - Z-RAPI</title>
+    <meta name="description" content="Free Rest API">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/prism.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
+    <link rel="stylesheet" href="/css/style.default.css" id="theme-stylesheet">
+    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+  </head>
+  <body>
+    <header class="header">   
+      <nav class="navbar navbar-expand-lg">
+        <div class="search-panel">
+          <div class="search-inner d-flex align-items-center justify-content-center">
+            <div class="close-btn">Close <i class="fa fa-close"></i></div>
+            <form id="searchForm" action="#">
+            </form>
+          </div>
+        </div>
+				 		     		
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+          <div class="navbar-header">
+	    <a href="/" class="navbar-brand">				 
+              <div class="brand-text brand-sm"><strong class="text-primary">R</strong><strong>V</strong></div></a>
+                <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
+              </div>       
+          </div>
+        </div>
+      </nav>
+    </header>
+	 	
+    <div class="d-flex align-items-stretch">
+      <nav id="sidebar">
+        <div class="sidebar-header d-flex align-items-center">
+          <div><img src="/img/about.jpg" alt="..." class="img-fluid rounded-circle"></div>
+          <div class="title">
+            <h1 class="h5">Rizqi a.k.a ZefianAlfian</h1>
+            <p>Web Developer & Ionic Developer</p>
+          </div>
+        </div>
+		   		 		
+         <ul class="list-unstyled">
+          <li><a href="/"> <i class="icon-home"></i>Home </a></li>
+          <li><a href="/doc/igdown"> <i class="icon-layers"></i>Instagram Download </a></li>
+	  <li><a href="/doc/igstalk"> <i class="icon-layers"></i>Instagram Stalker</a></li>
+	  <li><a href="/doc/ttdown-nowm"> <i class="icon-layers"></i>TikTok Download No Wm</a></li>
+          <li><a href="/doc/ttstalk"> <i class="icon-layers"></i>TikTok Stalk</a></li>
+	  <li><a href="/doc/randomquote"> <i class="icon-layers"></i>Random Quote</a></li>
+	  <li><a href="/doc/texttoimg"> <i class="icon-layers"></i>Text To Image</a></li>
+  <li class="active"><a href="/doc/covid"> <i class="icon-layers"></i>Covid19</a></li>				 				      
+          <li><a href="/about"> <i class="icon-info"></i>About</a></li>
+        </ul>               
+      </nav>
+					  
+      <div class="page-content">
+        <br><br>
+        <section class="no-padding-top no-padding-bottom" id='covid'>
+          <div class="container-fluid">
+            <div class="row">
+    
+              <div class="col-md-12 col-sm-12">
+                <div class="alert" style="background:#303030;">
+                  <h3 style="color:white;">Covid19 API</h3><hr>
+                  <p>Berfungsi untuk mendapatkan data covid Indonesia. Data diambil dari website www.covid19.go.id</p>
+                </div>					     				  	        
+              </div>
+								
+              <div class="col-md-12 col-sm-12">		   			   
+                <div style='background-color:#303030;' class="alert">
+                  <h4 style="color:white;">• Get Covid Indonesia</h4></hr>         
+                  <p>Mendapatkan data covid di Indonesia</p>
+                  <p>Usage :</p>
+                  <p><input type="text" class="form-control" readonly style="ovrflow:scroll;color:white;background-color:grey;" value="[GET] https://twindev.herokuapp.com/api/v1/covid/indonesia"></p>
+                  <h5 style="color:white;">Example : </h5>
+                  <p>[+] NodeJs</p>
+                  <pre><code class="language-javascript">const get = require("request");
+ get("https://z-rapi.herokuapp.com/api/covid-indo", (err, res, body) => {
+  if(!err || res.statusCode == 200){				  
+   var result = JSON.parse(res.body);
+   console.log(result);
+  }
+  else {
+   throw err;
+  }
+ });</code></pre>             
+                  <br>   
+                  <p>[+] PHP</p>
+                  <pre><code class="language-php">&lt;?php
+ $c = curl_init();									   
+ curl_setopt($c, CURLOPT_URL, "https://z-rapi.herokuapp.com/api/covid-indo");
+ curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+ curl_setopt ( $c , CURLOPT_USERAGENT , 'Mozilla / 5.0 (Linux; Android 5.0.2; Redmi Note 3) AppleWebKit / 537.36 (KHTML, seperti Gecko) Chrome / 78.0.3904.96 Mobile Safari / 537.36' );
+ $result = curl_exec($c);
+ curl_close($c);
+ echo $result;
+?&gt;</code></pre>
+                  <br>
+                  <p>[+] Result Success</p>
+                  <pre><code class="language-json">{
+  "status": true,
+  "creator": "@zefianalfian",
+  "result": {
+    "positif": "1,051,795",
+    "sembuh": "852,260",
+    "dirawat": "170,017",
+    "meninggal": "29,518"
+  },
+  "message": "Tetap jalani protokol kesehatan dan Semangattt"
+}
+ </code></pre>
+               </div>
+             </div>
+		   			 
+	    <p>&nbsp;</p>
+            </div>
+          </div>
+        </section>
+        
+                <section class="no-padding-top no-padding-bottom" id='infonpm'>
+          <div class="container-fluid">
+            <div class="row">
+    
+              <div class="col-md-12 col-sm-12">
+                <div class="alert" style="background:#303030;">
+                  <h3 style="color:white;">Information Node Package Manager (NPM) API</h3><hr>
+                  <p>Berfungsi untuk mendapatkan data package nodejs. Data diambil dari website www.npmjs.com</p>
+                </div>					     				  	        
+              </div>
+								
+              <div class="col-md-12 col-sm-12">		   			   
+                <div style='background-color:#303030;' class="alert">
+                  <h4 style="color:white;">• Get Covid Indonesia</h4></hr>         
+                  <p>Mendapatkan data covid di Indonesia</p>
+                  <p>Usage :</p>
+                  <p><input type="text" class="form-control" readonly style="ovrflow:scroll;color:white;background-color:grey;" value="[GET] https://twindev.herokuapp.com/api/v1/covid/indonesia"></p>
+                  <h5 style="color:white;">Example : </h5>
+                  <p>[+] NodeJs</p>
+                  <pre><code class="language-javascript">const get = require("request");
+ get("https://z-rapi.herokuapp.com/api/covid-indo", (err, res, body) => {
+  if(!err || res.statusCode == 200){				  
+   var result = JSON.parse(res.body);
+   console.log(result);
+  }
+  else {
+   throw err;
+  }
+ });</code></pre>             
+                  <br>   
+                  <p>[+] PHP</p>
+                  <pre><code class="language-php">&lt;?php
+ $c = curl_init();									   
+ curl_setopt($c, CURLOPT_URL, "https://z-rapi.herokuapp.com/api/covid-indo");
+ curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+ curl_setopt ( $c , CURLOPT_USERAGENT , 'Mozilla / 5.0 (Linux; Android 5.0.2; Redmi Note 3) AppleWebKit / 537.36 (KHTML, seperti Gecko) Chrome / 78.0.3904.96 Mobile Safari / 537.36' );
+ $result = curl_exec($c);
+ curl_close($c);
+ echo $result;
+?&gt;</code></pre>
+                  <br>
+                  <p>[+] Result Success</p>
+                  <pre><code class="language-json">{
+  "status": true,
+  "creator": "@zefianalfian",
+  "result": {
+    "positif": "1,051,795",
+    "sembuh": "852,260",
+    "dirawat": "170,017",
+    "meninggal": "29,518"
+  },
+  "message": "Tetap jalani protokol kesehatan dan Semangattt"
+}
+ </code></pre>
+               </div>
+             </div>
+		   			 
+	    <p>&nbsp;</p>
+            </div>
+          </div>
+        </section>
+     
+        <footer class="footer">
+          <div class="footer__block block no-margin-bottom">
+            <div class="container-fluid text-center">
+	      <small class="no-margin-bottom">Made with <i  style="color:red;" class="fa fa-heart"></i> by ZefianAlfian & Ricko Veriyanto <br> copyright &copy; 2020</small>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    	         	 
+    <script src="/js/prism.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="/vendor/chart.js/Chart.min.js"></script>
+    <script src="/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="/js/charts-home.js"></script>
+    <script src="/js/front.js"></script>
+   
+  </body>
+</html>

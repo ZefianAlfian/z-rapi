@@ -4,7 +4,7 @@ var express = require('express')
 var db = require(__path + '/database/db'),
     rapi = db.get("rapi")
 
-var creatorList = ['@zefianalfian','@rickoveriyanto','@zefianalfian', '@isywl_','@rickoveriyanto','@zefianalfian', '@isywl_','@rickoveriyanto']
+var creatorList = ['@zefianalfian','@rickoveriyanto','@allviyan7','@zefianalfian', '@isywl_','@rickoveriyanto','@zefianalfian', '@allviyan7','@isywl_','@rickoveriyanto','@allviyan7']
 var creator = creatorList[Math.floor(Math.random() * creatorList.length)]
 
 var fetch = require('node-fetch')

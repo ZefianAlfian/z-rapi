@@ -94,7 +94,7 @@ loghandler = {
         status: false,
         creator: `${creator}`,
         code: 406,
-        message: 'masukan parameter apikeyInput, email, name, age, country'
+        message: 'masukan parameter status, apikeyInput, email, nomorhp, name, age, country, exp'
     },
     error: {
         status: false,
@@ -141,45 +141,69 @@ router.get('/find', async (req, res, next) => {
         res.json(loghandler.error)
     }
 })
+
 router.get('/cekapikey', async (req, res, next) => {
 	var apikeyInput = req.query.apikey
 	if(!apikeyInput) return res.json(loghandler.notparam)
-	a = await rapi.findOne({apikey:apikeyInput}) ? true : false
-	if(a == false) return res.json(loghandler.invalidKey)
-	res.json({
-status:'free',
-creator: `${creator}`,
-apikey:apikeyInput,
-exp:'1-4-2021',
-message: `jangan lupa follow ${creator}`
-})
+	a = await rapi.findOne({apikey:apikeyInput})
+	if (a) {
+	json = JSON.stringify({
+		status: true,
+		creator: creator,
+		result: {
+            status:a.status,
+			id: a._id,
+			apikey: a.apikey,
+			more_info: {
+				email: a.email,
+				nomor_hp: a.nomor_hp,
+				name: a.name,
+				age: a.age,
+				country: a.country,
+				exp:a.exp,
+			},
+		},
+		message: `jangan lupa follow ${creator}`
+	})
+} else {
+	json = JSON.stringify({
+		status: false
+	})
+}
+res.send(JSON.parse(json))
 })
 
 router.get('/addapikey', (req, res, next) => {
     var apikey = req.query.apikey,
+        status = req.query.status,
         apikeyInput  = req.query.apikeyInput,
         email = req.query.email,
+        nomorhp = req.query.nomorhp
         name = req.query.name,
         age = req.query.age,
         country = req.query.country;
+        exp = req.query.exp;
 
     if (!apikey) return res.json(loghandler.notparam)
-    if (!(apikeyInput && email && name && age && country)) return res.json(loghandler.notAddApiKey)
+    if (!(status && apikeyInput && email && nomorhp && name && age && country && exp)) return res.json(loghandler.notAddApiKey)
     if (apikey != 'zef') return res.json(loghandler.invalidKey)
 
     try {
         rapi.insert({
+        	status: status,
             apikey: apikeyInput,
             email: email,
+            nomor_hp: nomorhp,
             name: name,
             age: age,
-            country: country
+            country: country,
+            exp: exp
         })
         .then(() => {
               res.json({
                   status: true,
                   creator: `${creator}`,
-                  result: 'berhasil menambah data apikey : ' + apikeyInput + ', email : ' + email + ', name :  ' + name + ', age : ' + age + ', country : ' + country
+                  result: 'berhasil menambah data, status : ' + status + ', apikey : ' + apikeyInput + ', email : ' + email + ', nomor_hp : ' + nomorhp + ', name :  ' + name + ', age : ' + age + ', country : ' + country + ', exp : ' + exp
               })
         })
     } catch (e) {
@@ -190,23 +214,35 @@ router.get('/addapikey', (req, res, next) => {
 
 router.get('/remove', (req, res, next) => {
     var apikey = req.query.apikey,
-        keys  = req.query.keys,
-        value = req.query.value
+        status = req.query.status,
+        apikeyInput  = req.query.apikeyInput,
+        email = req.query.email,
+        nomorhp = req.query.nomorhp
+        name = req.query.name,
+        age = req.query.age,
+        country = req.query.country;
+        exp = req.query.exp;
 
     if (!apikey) return res.json(loghandler.notparam)
-    if (!keys) return res.json(loghandler.notkey)
-    if (!value) return res.json(loghandler.notvalue)
+    if (!(status && apikeyInput && email && nomorhp && name && age && country && exp)) return res.json(loghandler.notAddApiKey)
     if (apikey != 'zef') return res.json(loghandler.invalidKey)
 
     try {
         rapi.remove({
-            [keys]: value
+            status: status,
+            apikey: apikeyInput,
+            email: email,
+            nomor_hp: nomorhp,
+            name: name,
+            age: age,
+            country: country,
+            exp: exp
         })
         .then(() => {
-              res.json({
+             res.json({
                   status: true,
                   creator: `${creator}`,
-                  result: "berhasil menghapus data keys = " + keys + ", value = " + value
+                  result: 'berhasil menghapus data, status : ' + status + ', apikey : ' + apikeyInput + ', email : ' + email + ', nomor_hp : ' + nomorhp + ', name :  ' + name + ', age : ' + age + ', country : ' + country + ', exp : ' + exp
               })
         })
     } catch (e) {

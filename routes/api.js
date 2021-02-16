@@ -1,21 +1,33 @@
 __path = process.cwd()
 
-var express = require('express')
-var db = require(__path + '/database/db'),
-    rapi = db.get("rapi")
+var express = require('express');
+var db = require(__path + '/database/db');
+try {
+var rapi = db.get("rapi");
+} catch (e) {
+	console.log('')
+}
 
-var creatorList = ['@zefianalfian','@rickoveriyanto','@allviyan7','@zefianalfian', '@isywl_','@rickoveriyanto','@zefianalfian', '@allviyan7','@isywl_','@rickoveriyanto','@allviyan7']
-var creator = creatorList[Math.floor(Math.random() * creatorList.length)]
+var creatorList = ['@zefianalfian','@rickoveriyanto','@allviyan7','@zefianalfian', '@isywl_','@rickoveriyanto','@zefianalfian', '@allviyan7','@isywl_','@rickoveriyanto','@allviyan7'];
+var creator = creatorList[Math.floor(Math.random() * creatorList.length)];
 
-var fetch = require('node-fetch')
-var TikTokScraper = require('tiktok-scraper')
-var router  = express.Router()
+var ytdl = require('ytdl-core');
+var ytpl = require('ytpl');
+var secure = require('ssl-express-www');
+var cors = require('cors');
+var scrapeYt = require("scrape-yt");
+var fetch = require('node-fetch');
+var cheerio = require('cheerio');
+var request = require('request');
+var TikTokScraper = require('tiktok-scraper');
+var router  = express.Router();
 
-var { color, bgcolor } = require(__path + '/lib/color.js')
-var options = require(__path + '/lib/options.js')
-var cheerio = require('cheerio')
-var request = require('request')
-var imgbbUploader = require("imgbb-uploader")
+var { color, bgcolor } = require(__path + '/lib/color.js');
+var options = require(__path + '/lib/options.js');
+var {
+	Nulis
+} = require('./../lib');
+var cookie = "HSID=A7EDzLn3kae2B1Njb;SSID=AheuwUjMojTWvA5GN;APISID=cgfXh13rQbb4zbLP/AlvlPJ2xBJBsykmS_;SAPISID=m82rJG4AC9nxQ5uG/A1FotfA_gi9pvo91C;__Secure-3PAPISID=m82rJG4AC9nxQ5uG/A1FotfA_gi9pvo91C;VISITOR_INFO1_LIVE=RgZLnZtCoPU;LOGIN_INFO=AFmmF2swRQIhAOXIXsKVou2azuz-kTsCKpbM9szRExAMUD-OwHYiuB6eAiAyPm4Ag3O9rbma7umBK-AG1zoGqyJinh4ia03csp5Nkw:QUQ3MjNmeXJ0UHFRS3dzaTNGRmlWR2FfMDRxa2NRYTFiN3lfTEdOVTc4QUlwbUI4S2dlVngxSG10N3ZqcHZwTHBKano5SkN2dDlPSkhRMUtReE42TkhYeUVWS3kyUE1jY2I1QzA1MDZBaktwd1llWU9lOWE4NWhoZV92aDkxeE9vMTNlcG1uMU9rYjhOaDZWdno2ZzN3TXl5TVNhSjNBRnJaMExrQXpoa2xzRVUteFNWZDI5S0Fn;PREF=app=desktop&f4=4000000&al=id;SID=2wezCMTUkWN3YS1VmS_DXaEU84J0pZIQdemM8Zry-uzWm8y1njBpLTOpxSfN-EaYCRSiDg.;YSC=HCowA1fmvzo;__Secure-3PSID=2wezCMTUkWN3YS1VmS_DXaEU84J0pZIQdemM8Zry-uzWm8y1dajgWzlBh9TgKapGOwuXfA.;SIDCC=AJi4QfFK0ri9fSfMjMQ4tOJNp6vOb9emETXB_nf2S05mvr2jBlmeEvlSsQSzPMuJl_V0wcbL1r8;__Secure-3PSIDCC=AJi4QfGeWHx-c4uTpU1rXCciO1p0s2fJWU07KrkZhWyD1Tqi8LyR-kHuBwHY9mViVYu1fRh2PA";
 
 loghandler = {
     notparam: {
@@ -122,6 +134,13 @@ var len = 15
         var randomTextNumber = random+randomlagi+'---------ZefianGanteng'+'RIZQI--GANTENG';
         
  //END RANDOM 
+ 
+ //FUNCTION
+ 
+ async function cekApiKey(api) {
+ 	ap = await rapi.findOne({apikey:api})
+ return ap;
+ }
 router.get('/find', async (req, res, next) => {
     var apikey = req.query.apikey
     if (!apikey) return res.json(loghandler.notparam)
@@ -145,7 +164,7 @@ router.get('/find', async (req, res, next) => {
 router.get('/cekapikey', async (req, res, next) => {
 	var apikeyInput = req.query.apikey
 	if(!apikeyInput) return res.json(loghandler.notparam)
-	a = await rapi.findOne({apikey:apikeyInput})
+	a = await cekApiKey(apikeyInput)
 	if (a) {
 	json = JSON.stringify({
 		status: true,
@@ -581,6 +600,37 @@ router.get('/texttoimg2', (req, res, next) => {
          })
 })
 
+router.get('/nulis', async (req, res, next) => {
+	var text = req.query.text,
+		 apikeyInput = req.query.apikey;
+	if(!apikeyInput) return res.json(loghandler.notparam)
+	 a = await rapi.findOne({apikey:apikeyInput}) ? true : false
+     if(a == false) return res.json(loghandler.invalidKey)
+	 if(!text) return res.json(loghandler.nottext)
+		Nulis(text)
+		 .then(hasil => {
+			fetch(encodeURI(`https://api.imgbb.com/1/upload?expiration=120&key=28dd175b555860ab2b5cdfedf125fe38&image=${hasil}&name=${randomTextNumber}`))
+                                .then(response => response.json())
+                                .then(data => {
+                                    var urlnya = data.data.url,
+                                        delete_url = data.data.delete_url;
+                                        res.json({
+                                            status : true,
+                                            creator : `${creator}`,
+                                            message : `jangan lupa follow ${creator}`,
+                                            result:{
+                                                url:urlnya,
+                                                delete_url: delete_url,
+                                                info: 'url akan hilang setelah 2 menit'
+                                            }
+                                        })
+                                })
+            })
+           .catch(err => {
+		  res.json(loghandler.error)
+		   })
+})
+
 router.get('/textmaker', async (req, res, next) => {
         var theme = req.query.theme,
              text = req.query.text,
@@ -597,6 +647,7 @@ router.get('/textmaker', async (req, res, next) => {
 
         if (theme == 'glitch') {
         	if (!text2) return res.json(loghandler.nottext2)
+            try {
             request.post({
                 url: "https://photooxy.com/logo-and-text-effects/make-tik-tok-text-effect-375.html",
                 headers: {
@@ -628,6 +679,10 @@ router.get('/textmaker', async (req, res, next) => {
                         })
                     }
                 }) 
+                } catch (e) {
+                	console.log(e);
+                res.json(loghandler.error)
+                }
         } else if (theme == 'google-suggestion') {
         	if (!text2) return res.json(loghandler.nottext2)
         if (!text3) return res.json(loghandler.nottext3)

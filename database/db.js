@@ -3,7 +3,7 @@ var __path = process.cwd(),
      { color } = require(__path + '/lib/color.js')
 
 // Connection URL
-var url = 'mongodb+srv://zefianap:RizqiGans7387@zapi.voj3i.mongodb.net/zefian_rapi?retryWrites=true&w=majority';
+var url = 'mongodb+srv://zefianap:Blabla7387@zapi.voj3i.mongodb.net/zefian_rapi?retryWrites=true&w=majority';
 try {
 if(url == '') throw console.log(color('Cek konfigurasi database, var url belum diisi','red'));
 } catch (e) {

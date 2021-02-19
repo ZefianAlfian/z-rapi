@@ -9,10 +9,7 @@ var mainrouter = require('./routes/main'),
     docrouter = require('./routes/doc')
 
 var app = express()
-app.enable('trust proxy');
 app.set("json spaces",2)
-app.use(cors())
-app.use(secure)
 app.use(express.static("public"))
 
 app.use('/', mainrouter)

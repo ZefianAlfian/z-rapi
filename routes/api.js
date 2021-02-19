@@ -27,7 +27,8 @@ var options = require(__path + '/lib/options.js');
 var {
 	Nulis,
 	Vokal,
-	Base
+	Base,
+	Github
 } = require('./../lib');
 var cookie = "HSID=A7EDzLn3kae2B1Njb;SSID=AheuwUjMojTWvA5GN;APISID=cgfXh13rQbb4zbLP/AlvlPJ2xBJBsykmS_;SAPISID=m82rJG4AC9nxQ5uG/A1FotfA_gi9pvo91C;__Secure-3PAPISID=m82rJG4AC9nxQ5uG/A1FotfA_gi9pvo91C;VISITOR_INFO1_LIVE=RgZLnZtCoPU;LOGIN_INFO=AFmmF2swRQIhAOXIXsKVou2azuz-kTsCKpbM9szRExAMUD-OwHYiuB6eAiAyPm4Ag3O9rbma7umBK-AG1zoGqyJinh4ia03csp5Nkw:QUQ3MjNmeXJ0UHFRS3dzaTNGRmlWR2FfMDRxa2NRYTFiN3lfTEdOVTc4QUlwbUI4S2dlVngxSG10N3ZqcHZwTHBKano5SkN2dDlPSkhRMUtReE42TkhYeUVWS3kyUE1jY2I1QzA1MDZBaktwd1llWU9lOWE4NWhoZV92aDkxeE9vMTNlcG1uMU9rYjhOaDZWdno2ZzN3TXl5TVNhSjNBRnJaMExrQXpoa2xzRVUteFNWZDI5S0Fn;PREF=app=desktop&f4=4000000&al=id;SID=2wezCMTUkWN3YS1VmS_DXaEU84J0pZIQdemM8Zry-uzWm8y1njBpLTOpxSfN-EaYCRSiDg.;YSC=HCowA1fmvzo;__Secure-3PSID=2wezCMTUkWN3YS1VmS_DXaEU84J0pZIQdemM8Zry-uzWm8y1dajgWzlBh9TgKapGOwuXfA.;SIDCC=AJi4QfFK0ri9fSfMjMQ4tOJNp6vOb9emETXB_nf2S05mvr2jBlmeEvlSsQSzPMuJl_V0wcbL1r8;__Secure-3PSIDCC=AJi4QfGeWHx-c4uTpU1rXCciO1p0s2fJWU07KrkZhWyD1Tqi8LyR-kHuBwHY9mViVYu1fRh2PA";
 
@@ -206,8 +207,8 @@ router.get('/addapikey', (req, res, next) => {
         exp = req.query.exp;
 
     if (!apikey) return res.json(loghandler.notparam)
-    if (!(status && apikeyInput && email && nomorhp && name && age && country && exp)) return res.json(loghandler.notAddApiKey)
     if (apikey != 'zef') return res.json(loghandler.invalidKey)
+    if (!(status && apikeyInput && email && nomorhp && name && age && country && exp)) return res.json(loghandler.notAddApiKey)
 
     try {
         rapi.insert({
@@ -711,20 +712,48 @@ router.get('/nulis', async (req, res, next) => {
 		   })
 })
 
+
+router.get('/github', async (req, res, next) => {
+	var username = req.query.username,
+		apikeyInput = req.query.apikey;
+
+		if (!apikeyInput) return res.json(loghandler.notparam)
+		a = await rapi.findOne({apikey:apikeyInput}) ? true : false
+		if (a == false) return res.json(loghandler.invalidKey)
+		if (!username) return res.json(loghandler.notusername)
+		Github(username)
+		.then(result => {
+			res.json({
+				status: true,
+				creator: creator,
+				result
+			})
+		})
+		.catch(e => {
+			console.log('Error :', color(e, 'red'))
+			res.json(loghandler.error)
+		})
+})
+router.get('/textmaker/list', (req, res, next) => {
+	res.json({
+		status:true,
+		creator:creator,
+		list: 'glitch , google-suggestion , blackpink'
+	})
+})
 router.get('/textmaker', async (req, res, next) => {
         var theme = req.query.theme,
              text = req.query.text,
              text2 = req.query.text2,
              text3 = req.query.text3,
              apikeyInput = req.query.apikey;
-        
+             
 	if(!apikeyInput) return res.json(loghandler.notparam)
 	a = await rapi.findOne({apikey:apikeyInput}) ? true : false
 	if(a == false) return res.json(loghandler.invalidKey)
         if (!theme) return res.json(loghandler.nottheme)
-        if (theme != 'glitch' && theme != 'google-suggestion') return res.json(loghandler.notheme)
+        if (theme != 'glitch' && theme != 'google-suggestion' && theme != 'blackpink') return res.json(loghandler.notheme)
         if (!text) return res.json(loghandler.nottext)
-
         if (theme == 'glitch') {
         	if (!text2) return res.json(loghandler.nottext2)
             try {
@@ -750,6 +779,7 @@ router.get('/textmaker', async (req, res, next) => {
                                             creator : `${creator}`,
                                             message : `jangan lupa follow ${creator}`,
                                             result:{
+                                            	theme: "Glitch",
                                                 url:urlnya,
                                                 delete_url: delete_url,
                                                 info: 'url akan hilang setelah 2 menit'
@@ -788,6 +818,40 @@ router.get('/textmaker', async (req, res, next) => {
                                             creator : `${creator}`,
                                             message : `jangan lupa follow ${creator}`,
                                             result:{
+                                            	theme: "Google Suggestion",
+                                                url:urlnya,
+                                                delete_url: delete_url,
+                                                info: 'url akan hilang setelah 2 menit'
+                                            }
+                                        })
+                                })
+                        })
+                    }
+                }) 
+        } else if (theme == 'blackpink'){
+            request.post({
+                url: "https://en.ephoto360.com/create-blackpink-logo-online-free-607.html",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `text_1=${text}&login=OK`,
+                }, (e,r,b) => {
+                    if (!e) {
+                        $ = cheerio.load(b)
+                        $(".thumbnail").find("img").each(function() {
+                            h = $(this).attr("src")
+                            var result = "https://photooxy.com/"+h
+                            fetch(encodeURI(`https://api.imgbb.com/1/upload?expiration=120&key=28dd175b555860ab2b5cdfedf125fe38&image=${result}&name=${randomTextNumber}`))
+                                .then(response => response.json())
+                                .then(data => {
+                                    var urlnya = data.data.url,
+                                        delete_url = data.data.delete_url;
+                                        res.json({
+                                            status : true,
+                                            creator : `${creator}`,
+                                            message : `jangan lupa follow ${creator}`,
+                                            result:{
+                                            	theme: "BlackPink",
                                                 url:urlnya,
                                                 delete_url: delete_url,
                                                 info: 'url akan hilang setelah 2 menit'
@@ -802,4 +866,11 @@ router.get('/textmaker', async (req, res, next) => {
         }
 })
 
+router.get('/', (req, res, next) => {
+	res.redirect(__path + '/views/index.html')
+})
+
+router.get('/*', (req, res) => {
+	res.sendFile(__path + '/views/404.html')
+})
 module.exports = router

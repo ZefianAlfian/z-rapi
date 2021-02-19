@@ -39,4 +39,8 @@ router.get('/ttdown-nowm', (req, res, next) => {
     })
 })
 
+router.get('/*', (req, res, next) => {
+	res.sendFile(__path + '/views/404.html')
+})
+
 module.exports = router

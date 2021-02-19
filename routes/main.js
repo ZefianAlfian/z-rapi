@@ -21,4 +21,5 @@ router.get('/config', (req, res) => {
     res.json(config)
 })
 
+
 module.exports = router

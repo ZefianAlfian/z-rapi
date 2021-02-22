@@ -22,7 +22,7 @@ var request = require('request');
 var TikTokScraper = require('tiktok-scraper');
 var router  = express.Router();
 var YoutubeAPI = require('simple-youtube-api')
-var youtubs = new YoutubeAPI('AIzaSyAStUHe-v7ujeeVy9unXZDKbuwaBwOxnvw'); 
+var youtubs = new YoutubeAPI('your youtube apikey'); 
 
 var { color, bgcolor } = require(__path + '/lib/color.js');
 var options = require(__path + '/lib/options.js');

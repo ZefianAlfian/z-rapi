@@ -8,7 +8,7 @@ var rapi = db.get("rapi");
 	console.log('')
 }
 
-var creatorList = ['@zefianalfian','@rickoveriyanto','@allviyan7','@zefianalfian', '@isywl_','@rickoveriyanto','@zefianalfian', '@allviyan7','@isywl_','@rickoveriyanto','@allviyan7'];
+var creatorList = ['@zefianalfian','@rickoveriyanto','@allviyan7','@zefianalfian','@isywl_','@hafizh','@rickoveriyanto','@zefianalfian', '@allviyan7','@isywl_','@rickoveriyanto','@allviyan7'];
 var creator = creatorList[Math.floor(Math.random() * creatorList.length)];
 
 var ytdl = require('ytdl-core');
@@ -186,6 +186,52 @@ router.get('/yt/play', async (req, res, next) => {
 		console.log('Error : ', color(e,'red'))
 	})
 })
+
+router.get('/infogempa', (req, res) => {
+    var apikeyInput = req.query.apikey,
+
+	if(!apikeyInput) return res.json(loghandler.notparam)
+	a = await rapi.findOne({apikey:apikeyInput}) ? true : false
+	if(a == false) return res.json(loghandler.invalidKey)
+const cheerio = require('cheerio')
+const axios = require('axios')
+
+  axios.get('https://www.bmkg.go.id/gempabumi/gempabumi-dirasakan.bmkg').then((response) => {
+  const $ = cheerio.load(response.data)
+
+  const urlElems = $('table.table-hover.table-striped')
+
+  for (let i = 0; i < urlElems.length; i++) {
+    const urlSpan = $(urlElems[i]).find('tbody')[0]
+
+    if (urlSpan) {
+      const urlData = $(urlSpan).find('tr')[0]
+      var Kapan = $(urlData).find('td')[1]
+      var Letak = $(urlData).find('td')[2]
+      var Magnitudo = $(urlData).find('td')[3]
+      var Kedalaman = $(urlData).find('td')[4]
+      var Wilayah = $(urlData).find('td')[5]
+      var lintang = $(Letak).text().split(' ')[0]
+      var bujur = $(Letak).text().split(' ')[2]
+      var hasil = {
+        Waktu: $(Kapan).text(),
+        Lintang: lintang,
+        Bujur: bujur,
+        Magnitudo: $(Magnitudo).text(),
+        Kedalaman: $(Kedalaman).text().replace(/\t/g, '').replace(/I/g, ''),
+        Wilayah: $(Wilayah).text().replace(/\t/g, '').replace(/I/g, '').replace('-','').replace(/\r/g, '').split('\n')[0],
+		    Map: $('div.row > div > img').attr('src')
+      }
+      res.send({
+          creator: creator,
+          status: true,
+          result: hasil
+      })
+    }
+  }
+  })
+})
+
 router.get('/yt/search', async (req, res, next) => {
 	var search = req.query.q,
 	       apikeyInput = req.query.apikey;

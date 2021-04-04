@@ -1,4 +1,4 @@
-var __path = process.cwd(),
+var __path = process.cwd(),a
       monk = require('monk'),
      { color } = require(__path + '/lib/color.js')
 

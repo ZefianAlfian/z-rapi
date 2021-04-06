@@ -1,0 +1,32 @@
+{
+  "name": "z-rapi-v2.5",
+  "version": "0.2.5",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1"
+  },
+  "description": "Update",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZefianAlfian/z-rapi.git"
+  },
+  "keywords": [
+    "rest-api"
+  ],
+  "author": "Rizqi a.k.a ZefianAlfian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZefianAlfian/z-rapi/issues"
+  },
+  "homepage": "https://github.com/ZefianAlfian/z-rapi#readme"
+}

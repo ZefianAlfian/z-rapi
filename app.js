@@ -3,10 +3,11 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const errorHandler = require("./app/middleware/error");
 
-const indexRouter = require("./app/routes/index");
-const usersRouter = require("./app/routes/users");
-const apiRouter = require("./app/routes/api");
+const indexRouter = require("./app/routes/indexRoute");
+const usersRouter = require("./app/routes/usersRoute");
+const apiRouter = require("./app/routes/apiRoute");
 
 //config
 const email = "tryaha78@gmail.com";
@@ -26,6 +27,9 @@ app.use(express.static(path.join(__dirname, "app/public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api", apiRouter);
+app.use("/api/apikey", usersRouter);
+
+app.use(errorHandler);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

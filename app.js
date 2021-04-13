@@ -2,11 +2,12 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 const logger = require("morgan");
 const errorHandler = require("./app/middleware/error");
 
 const indexRouter = require("./app/routes/indexRoute");
-const usersRouter = require("./app/routes/usersRoute");
+const usersRouter = require("./app/routes/authRoute");
 const apiRouter = require("./app/routes/apiRoute");
 
 //config
@@ -17,17 +18,18 @@ const app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "app/views"));
 app.set("view engine", "ejs");
+app.set("json spaces", 2);
 
 app.use(logger("dev"));
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "app/public")));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+app.use("/auth", usersRouter);
 app.use("/api", apiRouter);
-app.use("/api/apikey", usersRouter);
 
 app.use(errorHandler);
 

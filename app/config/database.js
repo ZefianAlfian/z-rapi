@@ -5,4 +5,9 @@ const db = new DataStore({
   filename: "./app/database/dbusers.db",
 });
 
-module.exports = { db };
+const dbWeb = new DataStore({
+  autoload: true,
+  filename: "./app/database/dbweb.db",
+});
+
+module.exports = { db, dbWeb };

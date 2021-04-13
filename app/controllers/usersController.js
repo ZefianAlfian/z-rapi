@@ -1,5 +1,5 @@
 const ErrorResponse = require("../utils/errorResponse");
-const { insertUsers } = require("../models/usersModel");
+const { insertUsers, readAllData } = require("../models/usersModel");
 const { responseMessage } = require("../utils/responseHandler");
 const moment = require("moment-timezone")
 
@@ -25,3 +25,8 @@ exports.createData = (req, res, next) => {
   data.date = new Date()
   insertUsers(res, data, next);
 };
+
+
+exports.readData = (req, res, next) => {
+	readAllData(req, res, next);
+}

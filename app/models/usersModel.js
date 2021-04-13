@@ -17,7 +17,16 @@ exports.insertUsers = (response, data, next) => {
       next(new ErrorResponse(err, 500));
       return false;
     }
-    console.log(data)
     responseMessage(response, 201, "Berhasil insert data!");
   });
 };
+
+exports.readAllData = (req, response, next) => {
+	db.find({}, (er, data) => {
+		if (er){
+			next(new ErrorResponse(er, 500));
+			return false;
+		}
+		responseData(response, 201, data)
+	})
+}
